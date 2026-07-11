@@ -8,7 +8,7 @@ Dep. Variable:               is_fatal   No. Observations:                22071
 Model:                          Logit   Df Residuals:                    22057
 Method:                           MLE   Df Model:                           13
 Date:                Sat, 11 Jul 2026   Pseudo R-squ.:                 0.06586
-Time:                        20:44:03   Log-Likelihood:                -452.22
+Time:                        20:57:00   Log-Likelihood:                -452.22
 converged:                       True   LL-Null:                       -484.11
 Covariance Type:            nonrobust   LLR p-value:                 1.103e-08
 =======================================================================================

@@ -21,7 +21,7 @@ wheels/
 道路交通事故調查報告表(112.7.1後適用).pdf
 題目：113年臺北市A1及A2類交通事故多維度分析.pdf
 
-# Generated database
-data/
-*.sqlite
+# Generated database（保留 traffic.sqlite 供 Streamlit Cloud 零設定部署）
+data/*
+!data/traffic.sqlite
 *.db
