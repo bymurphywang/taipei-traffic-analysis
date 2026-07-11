@@ -3,10 +3,10 @@ title: Taipei Traffic Analysis
 emoji: 🚦
 colorFrom: blue
 colorTo: indigo
-sdk: streamlit
-sdk_version: "1.59.1"
+sdk: gradio
+sdk_version: "6.20.0"
 python_version: "3.11"
-app_file: app/dashboard.py
+app_file: app/gradio_app.py
 pinned: false
 ---
 
@@ -39,7 +39,9 @@ SQLite（accidents / parties / 代碼維度表）── src/taipei_traffic/db.py
         │
         ├── sql/*.sql（10 支查詢，窗函數）──► 分析結果/統計表/*.csv
         ├── src/taipei_traffic/models.py ──► 卡方檢定＋邏輯迴歸（分析結果/模型結果/）
-        ├── app/dashboard.py  ──► Streamlit 互動儀表板（篩選器＋GPS 熱點地圖）
+        ├── src/taipei_traffic/figures.py ─► 共用 Plotly 圖表模組
+        │       ├── app/dashboard.py   ──► Streamlit 儀表板（本機，pydeck 地圖）
+        │       └── app/gradio_app.py  ──► Gradio 儀表板（線上 demo，HF Spaces）
         └── api/main.py       ──► FastAPI REST 服務（/docs Swagger）
 ```
 
@@ -56,7 +58,7 @@ uv sync
 # 1) 重跑完整分析（需原始 CSV，見下方資料來源；已附建好的 SQLite 可跳過）
 uv run python -m taipei_traffic.pipeline
 
-# 2) 互動儀表板
+# 2) 互動儀表板（Streamlit 版；或 Gradio 版：uv run python app/gradio_app.py）
 uv run streamlit run app/dashboard.py
 
 # 3) REST API（Swagger 文件在 http://127.0.0.1:8000/docs）
@@ -76,24 +78,30 @@ uv run uvicorn api.main:app
 ## 專案結構
 
 ```
-├── src/taipei_traffic/     # 分析套件：資料清理、SQLite、SQL 統計、圖表、統計模型、pipeline
+├── src/taipei_traffic/     # 分析套件：資料清理、SQLite、SQL 統計、共用圖表、統計模型、pipeline
 ├── sql/                    # 10 支統計查詢（佔比/累積佔比用窗函數）
-├── app/dashboard.py        # Streamlit 儀表板
+├── app/dashboard.py        # Streamlit 儀表板（本機）
+├── app/gradio_app.py       # Gradio 儀表板（線上 demo）
 ├── api/main.py             # FastAPI 服務
 ├── 完整分析.ipynb          # 探索性分析（圖表 01–11 由此產生）
 ├── 完整研究報告.md         # 研究報告（方法、結果、政策建議）
 └── 分析結果/               # 統計表（CSV）、圖表（PNG）、模型結果
 ```
 
-## 部署（Streamlit Community Cloud）
+## 部署（Hugging Face Spaces）
 
-1. 推送本倉庫到 GitHub（`data/traffic.sqlite` 已納入版控，雲端無需原始 CSV）
-2. 到 [share.streamlit.io](https://share.streamlit.io) → New app → 選擇此 repo
-3. Main file path 填 `app/dashboard.py`，部署即可
+本 README 開頭的 YAML 即 Space 設定（Gradio SDK）。二進位檔（SQLite/PNG）以 Git LFS 追蹤。
+
+1. 在 [huggingface.co/new-space](https://huggingface.co/new-space) 建立 Space：SDK 選 **Gradio**（Blank）、硬體 **ZeroGPU**（2026 年起免費帳號僅此選項；本 app 純 CPU 運算，不會動用 GPU 配額）
+2. 推送：
+   ```bash
+   git remote add hf https://huggingface.co/spaces/<帳號>/taipei-traffic-analysis
+   git lfs push --all hf main && git push -f hf main
+   ```
 
 ## 技術棧
 
-Python 3.11 · uv · pandas · SQLite/SQL · SciPy · statsmodels · Streamlit · Plotly · pydeck · FastAPI · Matplotlib/Seaborn
+Python 3.11 · uv · pandas · SQLite/SQL · SciPy · statsmodels · Plotly · Streamlit · Gradio · pydeck · FastAPI · Matplotlib/Seaborn · Git LFS
 
 ## 統計方法備註
 
