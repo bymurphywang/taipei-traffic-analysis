@@ -17,6 +17,8 @@ pinned: false
 > an interactive Streamlit dashboard with GPS hotspot mapping, and a FastAPI
 > statistics service. *(English overview [below](#english-overview).)*
 
+**🔗 線上 Demo：<https://huggingface.co/spaces/bymurphywang/taipei-traffic-analysis>**
+
 分析臺北市 113 年全年 **51,810 筆當事人紀錄／22,368 件 A1、A2 類交通事故**
 （政府開放資料），從探索性分析出發，完成資料工程、推論統計、互動視覺化與
 API 服務的完整交付。統計口徑經與官方《臺北市 113 年交通事故分析報告》逐項驗證。
@@ -133,6 +135,8 @@ Python 3.11 · uv · pandas · SQLite/SQL · SciPy · statsmodels · Plotly · S
   accident queries sharing the exact SQL used for the published tables
 - Figures validated line-by-line against the official Taipei City 2024
   traffic accident report
+
+**Live demo**: <https://huggingface.co/spaces/bymurphywang/taipei-traffic-analysis>
 
 **Run it**: `uv sync`, then `uv run streamlit run app/dashboard.py`
 (a pre-built SQLite database ships with the repo).
