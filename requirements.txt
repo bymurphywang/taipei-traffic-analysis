@@ -3,3 +3,4 @@
 # gradio 本身由 Space 的 sdk_version 提供，不在此列
 pandas==2.3.3
 plotly==6.9.0
+spaces

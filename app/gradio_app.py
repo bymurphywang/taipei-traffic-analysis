@@ -16,6 +16,17 @@ import gradio as gr
 import pandas as pd
 import plotly.graph_objects as go
 
+# HF ZeroGPU 硬體要求 app 至少宣告一個 @spaces.GPU 函式才准啟動；
+# 本 app 純 CPU 運算，此函式永遠不會被呼叫（本機無 spaces 套件則跳過）
+try:
+    import spaces
+
+    @spaces.GPU
+    def _zerogpu_startup_probe():
+        pass
+except ImportError:
+    pass
+
 from taipei_traffic.codes import TIME_PERIODS
 from taipei_traffic.config import MODEL_DIR
 from taipei_traffic import figures as F
