@@ -7,3 +7,5 @@ textColor = "#0b0b0b"
 
 [server]
 headless = true
+# 雲端共享主機的 inotify 額度可能耗盡導致 watchdog 原生崩潰，改用純 Python 輪詢
+fileWatcherType = "poll"
