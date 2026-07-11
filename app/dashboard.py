@@ -8,6 +8,12 @@
 """
 
 import sqlite3
+import sys
+from pathlib import Path
+
+# 部署環境（如 Streamlit Community Cloud）只安裝相依套件、不安裝本專案本身，
+# 直接把 src/ 加入匯入路徑，讓本機與雲端行為一致
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 import pandas as pd
 import plotly.graph_objects as go

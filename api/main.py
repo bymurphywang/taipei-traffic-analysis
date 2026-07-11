@@ -8,13 +8,18 @@
 """
 
 import sqlite3
+import sys
+from pathlib import Path
 from typing import Annotated
+
+# 與 app/dashboard.py 相同：部署環境不一定安裝本專案套件，直接加入 src/
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from fastapi import FastAPI, HTTPException, Query
 from pydantic import BaseModel
 
 from taipei_traffic.config import DB_PATH
-from taipei_traffic.stats import QUERY_OUTPUTS, run_query
+from taipei_traffic.stats import run_query
 
 app = FastAPI(
     title="臺北市113年交通事故統計 API",
