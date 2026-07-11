@@ -1,0 +1,6 @@
+# Hugging Face Spaces（Streamlit SDK）用的最小相依清單；
+# 本機開發請用 uv sync（pyproject.toml / uv.lock 才是完整依賴的單一來源）
+# streamlit 本身由 Space 的 sdk_version 提供，不在此列
+pandas==2.3.3
+plotly==6.9.0
+pydeck==0.9.3

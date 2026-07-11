@@ -1,3 +1,15 @@
+---
+title: Taipei Traffic Analysis
+emoji: 🚦
+colorFrom: blue
+colorTo: indigo
+sdk: streamlit
+sdk_version: "1.59.1"
+python_version: "3.11"
+app_file: app/dashboard.py
+pinned: false
+---
+
 # 臺北市 113 年（2024）A1/A2 類交通事故多維度分析
 
 > **Taipei City 2024 Traffic Accident Analysis** — an end-to-end data product:
