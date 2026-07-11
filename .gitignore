@@ -1,0 +1,27 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# OS / editor
+.DS_Store
+.cursor/
+.codegraph/
+.ipynb_checkpoints/
+
+# Raw data & third-party documents (see README for download links)
+113年-臺北市A1及A2類交通事故明細.csv
+臺北市113年交通事故分析報告.pdf
+道路交通事故調查報告表(112.7.1後適用).pdf
+題目：113年臺北市A1及A2類交通事故多維度分析.pdf
+
+# Generated database
+data/
+*.sqlite
+*.db

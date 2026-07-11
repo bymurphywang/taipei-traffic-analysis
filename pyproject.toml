@@ -1,0 +1,17 @@
+[project]
+name = "taipei-traffic-analysis"
+version = "1.0.0"
+description = "Multi-dimensional analysis of Taipei City A1/A2 traffic accidents (2024): data pipeline, statistical models, interactive dashboard, and REST API"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "matplotlib>=3.10.7",
+    "pandas>=2.3.3",
+    "seaborn>=0.13.2",
+    "squarify>=0.4.4",
+]
+
+[dependency-groups]
+dev = [
+    "ipykernel>=7.1.0",
+]
