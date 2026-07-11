@@ -40,12 +40,18 @@ WEEKDAY_ORDER = [WEEKDAY_MAP[i] for i in range(7)]
 st.set_page_config(page_title="臺北市113年交通事故分析", page_icon="🚦", layout="wide")
 
 
-@st.cache_data
+# cache_resource：所有 session 共享同一份唯讀 DataFrame，避免免費雲端方案
+# 因 cache_data 逐 session 複製資料而耗盡記憶體
+@st.cache_resource
 def load_data():
     with sqlite3.connect(DB_PATH) as conn:
         accidents = pd.read_sql_query(
             """
-            SELECT a.*, v.category AS vehicle_category, v.label AS vehicle_label,
+            SELECT a.accident_id, a.month, a.hour, a.date, a.weekday_name,
+                   a.time_period, a.district, a.location, a.severity,
+                   a.deaths_24h, a.deaths_2_30d, a.injuries, a.weather_code,
+                   a.is_fatal, a.lon, a.lat, a.cause_code,
+                   v.category AS vehicle_category, v.label AS vehicle_label,
                    c.label AS cause_label
             FROM accidents a
             LEFT JOIN vehicle_codes v ON v.code = a.first_vehicle_code
@@ -55,13 +61,16 @@ def load_data():
         )
         parties = pd.read_sql_query(
             """
-            SELECT p.accident_id, p.vehicle_code, p.cause_code_individual,
+            SELECT p.accident_id, p.cause_code_individual,
                    v.label AS vehicle_label
             FROM parties p
             LEFT JOIN vehicle_codes v ON v.code = p.vehicle_code
             """,
             conn,
         )
+    # 低基數欄位轉 category dtype 節省記憶體（groupby 會用到的標籤欄維持 object）
+    for col in ["district", "time_period", "severity", "weekday_name", "vehicle_category"]:
+        accidents[col] = accidents[col].astype("category")
     return accidents, parties
 
 
@@ -202,7 +211,7 @@ with tab_time:
     c2.plotly_chart(styled(fig), width="stretch")
 
     heat = (
-        f.groupby(["hour", "weekday_name"]).size().unstack(fill_value=0)
+        f.groupby(["hour", "weekday_name"], observed=False).size().unstack(fill_value=0)
         .reindex(index=range(24), columns=WEEKDAY_ORDER, fill_value=0)
     )
     fig = go.Figure(
